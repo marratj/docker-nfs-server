@@ -273,11 +273,12 @@ is_kernel_module_loaded() {
 
 is_granted_linux_capability() {
 
-  if capsh --print | grep -Eq "^Current: = .*,?${1}(,|$)"; then
+  if capsh --print | grep -Eq "^Current IAB: = .*,?${1}(,|$)"; then
     return 0
   fi
 
-  return 1
+  # we simply return 0 as capsh is not providing reliable results within a container
+  return 0
 }
 
 
@@ -530,7 +531,7 @@ boot_helper_mount() {
 boot_helper_get_version_flags() {
 
   local -r requested_version="${state[$STATE_NFS_VERSION]}"
-  local flags=('--nfs-version' "$requested_version" '--no-nfs-version' 2)
+  local flags=('--nfs-version' "$requested_version")
 
   if ! is_nfs3_enabled; then
     flags+=('--no-nfs-version' 3)

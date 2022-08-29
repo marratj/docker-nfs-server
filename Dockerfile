@@ -15,6 +15,9 @@ RUN mkdir -p /var/lib/nfs/rpc_pipefs                                            
 
 EXPOSE 2049
 
+# VOLUME directive required, else a container cannot export its filesystem
+VOLUME /exports
+
 # setup entrypoint
 COPY ./entrypoint.sh /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
